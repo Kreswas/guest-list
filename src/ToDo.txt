@@ -1,0 +1,7 @@
+input for first name
+input for second name
+button for adding
+button for removing
+having an attending checkbox (next to the person)
+Newly created guests should be set as not attending by default
+Each guest (all content and form fields) should be contained inside a div element with the attribute data-test-id="guest"
