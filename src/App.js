@@ -4,7 +4,8 @@ function App() {
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [guests, setGuests] = useState([]);
-  const baseUrl = 'http://localhost:4000';
+  const baseUrl =
+    'https://96f415e0-49e0-4a23-983f-8290a09e43e3.id.repl.co/guests/';
   const [isLoading, setIsLoading] = useState(false);
   const handleClick = () => {
     setName('');
@@ -14,7 +15,7 @@ function App() {
   useEffect(() => {
     async function fetchGuests() {
       setIsLoading(true);
-      const response = await fetch(`${baseUrl}/guests`);
+      const response = await fetch({ baseUrl });
       const allGuests = await response.json();
       setIsLoading(false);
       setGuests(allGuests);
@@ -22,13 +23,16 @@ function App() {
     fetchGuests().catch((err) => console.log(err));
   }, []);
   async function getNewGuest() {
-    const response = await fetch(`${baseUrl}/guests`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      { baseUrl },
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ firstName: name, lastName: lastName }),
       },
-      body: JSON.stringify({ firstName: name, lastName: lastName }),
-    });
+    );
     const createdGuest = await response.json();
 
     setGuests([...guests, createdGuest]);
@@ -42,7 +46,7 @@ function App() {
     setGuests(guests.filter((guest) => guest.id !== deletedGuest.id));
   }
   async function attendingGuest(id, checkStatus) {
-    const response = await fetch(`${baseUrl}/guests/${id}`, {
+    const response = await fetch(`${baseUrl}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -69,7 +73,7 @@ function App() {
           }}
         >
           <label>
-            First Name
+            First Name:
             <input
               value={name}
               onChange={(event) => {
@@ -79,7 +83,7 @@ function App() {
           </label>
           <br />
           <label>
-            Last Name
+            Last Name:
             <input
               value={lastName}
               onChange={(event) => {
